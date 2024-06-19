@@ -11,16 +11,19 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <link rel="shortcut icon" href="<?= PLUGIN_STATIC ?>/img/tether.svg"/>
     <title>USDT 在线收银台</title>
-    <link href="<?= PLUGIN_STATIC ?>/css/main.min.css" rel="stylesheet"/>
+    <link href="https://epayusdt.pages.dev/main.min.css" rel="stylesheet"/>
 </head>
 <body>
 <div class="container">
     <div class="header">
         <div class="icon">
-            <img class="logo" src="<?= PLUGIN_STATIC ?>/img/tether.svg" alt="logo">
+            <img class="logo" src="https://epayusdt.pages.dev/tether.svg" alt="logo">
         </div>
         <h1>
+            USDT-TRC20 收银台
+            <!--原来的支付页面显示
             <?= $_SERVER['HTTP_HOST']; ?>
+            -->
         </h1>
         <label>
             请扫描二维码或点击金额和地址粘贴转账USDT(trc-20)支付。<br> <b>转账金额必须为下方显示的金额且需要在倒计时内完成转账，否则无法被系统确认！</b>
@@ -60,13 +63,14 @@
         </div>
     </div>
     <div class="footer">
-        <p>Powered by <a href="https://github.com/v03413/epay_usdt" target="_blank">莫名博客</a></p>
+        <p>Please scan the QR code or click the amount and address to paste the transfer USDT (TRC20) to pay</p>
+        <p>The payment amount must be the displayed amount and the payment must be completed within the countdown</a></p>
     </div>
 </div>
-<script src="<?= PLUGIN_STATIC ?>/js/jquery.min.js"></script>
-<script src="<?= PLUGIN_STATIC ?>/js/clipboard.min.js"></script>
-<script src="<?php echo $cdnpublic ?>layer/3.1.1/layer.js"></script>
-<script src="<?php echo $cdnpublic ?>jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script src="https://epayusdt.pages.dev/jquery.min.js"></script>
+<script src="https://epayusdt.pages.dev/clipboard.min.js"></script>
+<script src="https://epayusdt.pages.dev/layer.js"></script>
+<script src="https://epayusdt.pages.dev/jquery.qrcode.min.js"></script>
 <script>
     // 检查是否支付完成
     function loadmsg() {

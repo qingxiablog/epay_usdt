@@ -11,19 +11,16 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <link rel="shortcut icon" href="<?= PLUGIN_STATIC ?>/img/tether.svg"/>
     <title>USDT 在线收银台</title>
-    <link href="https://epayusdt.pages.dev/main.min.css" rel="stylesheet"/>
+    <link href="<?= PLUGIN_STATIC ?>/css/main.min.css" rel="stylesheet"/>
 </head>
 <body>
 <div class="container">
     <div class="header">
         <div class="icon">
-            <img class="logo" src="https://epayusdt.pages.dev/tether.svg" alt="logo">
+            <img class="logo" src="<?= PLUGIN_STATIC ?>/img/tether.svg" alt="logo">
         </div>
         <h1>
-            USDT-TRC20 收银台
-            <!--原来的支付页面显示
-            <?= $_SERVER['HTTP_HOST']; ?>
-            -->
+            <?= htmlspecialchars($_SERVER['HTTP_HOST'] ?? '', ENT_QUOTES, 'UTF-8'); ?>
         </h1>
         <label>
             请扫描二维码或点击金额和地址粘贴转账USDT(trc-20)支付。<br> <b>转账金额必须为下方显示的金额且需要在倒计时内完成转账，否则无法被系统确认！</b>
@@ -32,12 +29,12 @@
     <div class="content">
         <div class="section">
             <div class="title">
-                <h1 class="amount parse-amount" data-clipboard-text="<?= $usdt; ?>" id="usdt">
-                    <?= $usdt; ?> <span>USDT.TRC20</span>
+                <h1 class="amount parse-amount" data-clipboard-text="<?= htmlspecialchars((string) $usdt, ENT_QUOTES, 'UTF-8'); ?>" id="usdt">
+                    <?= htmlspecialchars((string) $usdt, ENT_QUOTES, 'UTF-8'); ?> <span>USDT.TRC20</span>
                 </h1>
             </div>
-            <div class="address parse-action" data-clipboard-text="<?= $address; ?>" id="address">
-                <?= $address; ?>
+                <div class="address parse-action" data-clipboard-text="<?= htmlspecialchars((string) $address, ENT_QUOTES, 'UTF-8'); ?>" id="address">
+                    <?= htmlspecialchars((string) $address, ENT_QUOTES, 'UTF-8'); ?>
             </div>
             <div class="main">
                 <div class="qr-image" id="qrcode"></div>
@@ -63,14 +60,13 @@
         </div>
     </div>
     <div class="footer">
-        <p>Please scan the QR code or click the amount and address to paste the transfer USDT (TRC20) to pay</p>
-        <p>The payment amount must be the displayed amount and the payment must be completed within the countdown</a></p>
+        <p>Powered by <a href="https://github.com/v03413/epay_usdt" target="_blank">莫名博客</a></p>
     </div>
 </div>
-<script src="https://epayusdt.pages.dev/jquery.min.js"></script>
-<script src="https://epayusdt.pages.dev/clipboard.min.js"></script>
-<script src="https://epayusdt.pages.dev/layer.js"></script>
-<script src="https://epayusdt.pages.dev/jquery.qrcode.min.js"></script>
+<script src="<?= PLUGIN_STATIC ?>/js/jquery.min.js"></script>
+<script src="<?= PLUGIN_STATIC ?>/js/clipboard.min.js"></script>
+<script src="<?php echo $cdnpublic ?>layer/3.1.1/layer.js"></script>
+<script src="<?php echo $cdnpublic ?>jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
 <script>
     // 检查是否支付完成
     function loadmsg() {
@@ -79,22 +75,22 @@
             dataType: "json",
             url: "/getshop.php",
             timeout: 10000, //ajax请求超时时间10s
-            data: {type: "alipay", trade_no: "<?php echo $order['trade_no']?>"}, //post数据
+                    data: {trade_no: <?= json_encode((string) $order['trade_no']); ?>},
             success: function (data, textStatus) {
                 //从服务器得到数据，显示数据并继续查询
                 if (data.code == 1) {
                     layer.msg('支付成功，正在跳转中...', {icon: 16, shade: 0.1, time: 15000});
-                    setTimeout(window.location.href = data.backurl, 1000);
+                    setTimeout(function () { window.location.href = data.backurl; }, 1000);
                 } else {
-                    setTimeout("loadmsg()", 2000);
+                    setTimeout(loadmsg, 2000);
                 }
             },
             //Ajax请求超时，继续查询
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 if (textStatus == "timeout") {
-                    setTimeout("loadmsg()", 1000);
+                    setTimeout(loadmsg, 1000);
                 } else { //异常
-                    setTimeout("loadmsg()", 3000);
+                    setTimeout(loadmsg, 3000);
                 }
             }
         });
@@ -106,12 +102,12 @@
             dataType: "json",
             url: "/getshop.php",
             timeout: 10000, //ajax请求超时时间10s
-            data: {type: "alipay", trade_no: "<?php echo $order['trade_no']?>"},
+            data: {trade_no: <?= json_encode((string) $order['trade_no']); ?>},
             success: function (data, textStatus) {
                 //从服务器得到数据，显示数据并继续查询
                 if (data.code == 1) {
                     layer.msg('支付成功，正在跳转中...', {icon: 16, shade: 0.1, time: 15000});
-                    setTimeout(window.location.href = data.backurl, 1000);
+                    setTimeout(function () { window.location.href = data.backurl; }, 1000);
                 } else {
                     layer.msg('您还未完成付款，请继续付款', {shade: 0, time: 1500});
                 }
@@ -121,7 +117,7 @@
 
     $(function () {
         $('#qrcode').qrcode({
-            text: "<?= $address; ?>",
+            text: <?= json_encode((string) $address); ?>,
             width: 230,
             height: 230,
             foreground: "#000000",
@@ -158,7 +154,7 @@
 
         setTimeout(clock, 1000);
 
-        setTimeout("loadmsg()", 2000);
+        setTimeout(loadmsg, 2000);
     });
 </script>
 </body>
